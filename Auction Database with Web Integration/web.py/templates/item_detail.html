@@ -1,0 +1,79 @@
+{% extends "app_base.html" %}
+{% block content %}
+
+<a href='/search'>← Back</a>
+{% if item %}
+
+	<h2>{{ item['Name'] }}</h2> 
+
+	{% if isAuctionClosed %}
+		<div>
+			<h4>📌 AUCTION CLOSED!</h4>
+			{% if latestBid %}
+				<div>
+					<h4>Winner Details: </h4>
+
+					<strong><span>UserID: </span></strong>
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					<span>{{ latestBid['UserID'] }}</span>
+
+					<strong><span>Amount: </span></strong>
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					<span>${{ latestBid['Amount'] }}</span>
+
+					<strong><span>Time</span></strong>
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					<span>{{ latestBid['Time'] }}</span>
+
+					<br /><br />
+				</div>
+			{% endif %}
+		
+		</div>
+	{% endif %}
+
+	{% for key in item %}
+		<div>
+			<strong><span>{{ key|e }}</span></strong>
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			<span>{{ item[key]|e }}</span>
+		</div>
+  	{% endfor %}
+
+  	{% if categories %}
+  	<div>
+		<strong><span>Categories: </span></strong>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		<ul>
+			{% for category in categories %}
+				<li><span>{{ category['Category']|e }}</span></li>
+	  		{% endfor %}
+		</ul>
+	</div>
+  	{% endif %}
+
+  	{% if isAuctionClosed %}
+  		<h3>Auction Status: Closed</h3>
+  	{% endif %}
+
+	{% if not isAuctionClosed %}
+		<h3>Auction Status: Open</h3>
+  	{% endif %}  	
+
+  	{% if bids %}
+  		<h4>Bids (least recent to most recent)</h4>
+  		{% for bid in bids %}
+  			{% for key in bid %}
+				<div>
+					<strong><span>{{ key|e }}</span></strong>
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					<span>{{ bid[key]|e }}</span>
+				</div>
+		  	{% endfor %}
+		  	<br>
+  		{% endfor %}
+  	{% endif %}
+
+{% endif %}
+
+{% endblock %}
